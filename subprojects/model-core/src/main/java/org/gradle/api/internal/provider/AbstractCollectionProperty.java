@@ -125,6 +125,15 @@ public abstract class AbstractCollectionProperty<T, C extends Collection<T>> ext
     }
 
     @Override
+    public void visitDependencies(TaskDependencyResolveContext context) {
+        if (!maybeVisitBuildDependencies(context)) {
+            for (T item : get()) {
+                context.maybeAdd(item);
+            }
+        }
+    }
+
+    @Override
     public boolean isPresent() {
         assertReadable();
         if (!value.present()) {
