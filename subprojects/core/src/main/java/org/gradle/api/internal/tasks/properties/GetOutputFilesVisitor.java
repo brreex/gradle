@@ -32,11 +32,9 @@ import java.util.List;
 public class GetOutputFilesVisitor extends PropertyVisitor.Adapter {
     private final List<TaskOutputFilePropertySpec> specs = Lists.newArrayList();
     private ImmutableSortedSet<TaskOutputFilePropertySpec> fileProperties;
-    private boolean hasDeclaredOutputs;
 
     @Override
     public void visitOutputFileProperty(TaskOutputFilePropertySpec outputFileProperty) {
-        hasDeclaredOutputs = true;
         if (outputFileProperty instanceof CompositeTaskOutputPropertySpec) {
             Iterators.addAll(specs, ((CompositeTaskOutputPropertySpec) outputFileProperty).resolveToOutputProperties());
         } else {
@@ -55,9 +53,5 @@ public class GetOutputFilesVisitor extends PropertyVisitor.Adapter {
             fileProperties = TaskPropertyUtils.collectFileProperties("output", specs.iterator());
         }
         return fileProperties;
-    }
-
-    public boolean hasDeclaredOutputs() {
-        return hasDeclaredOutputs;
     }
 }
